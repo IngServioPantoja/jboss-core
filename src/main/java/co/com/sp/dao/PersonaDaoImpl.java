@@ -18,7 +18,7 @@ public class PersonaDaoImpl implements PersonaDao, Serializable{
 
 	private static final long serialVersionUID = -8339847219157556056L;
 
-	@PersistenceContext(unitName = "jboss-core-pu")
+	@PersistenceContext(unitName = "PersonaPU")
 	EntityManager em;
 
 	@SuppressWarnings("unchecked")
