@@ -11,7 +11,7 @@ import co.com.sp.domain.Persona;
 public interface PersonaService {
 
 	public List<Persona> listarPersonas();
-
+	
 	public boolean encontrarCedula(String cedula) throws SQLException;
 	
 	public Persona encontrarPersonaPorId(Persona persona);
