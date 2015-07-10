@@ -36,6 +36,9 @@ public class Rol implements Serializable {
 	@Column(name="nombre")
 	private String nombre;
 	
+	@Column(name="sigla")
+	private String sigla;
+	
 	@Column(name="descripcion")
 	private String descripcion;
 	
@@ -72,7 +75,15 @@ public class Rol implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public String getSigla() {
+		return sigla;
+	}
 
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+	
 	public String getDescripcion() {
 		return descripcion;
 	}

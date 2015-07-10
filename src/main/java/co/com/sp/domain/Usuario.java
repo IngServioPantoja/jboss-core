@@ -3,8 +3,19 @@ package co.com.sp.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -31,11 +42,12 @@ public class Usuario implements Serializable {
 	
 	private String password;
 
+	private boolean activo;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_persona")
 	private Persona persona;
 	
-	@XmlTransient
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	@OneToMany(mappedBy = "usuario", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
 	private List<UsuarioGrupo> usuariosGrupos;
@@ -94,7 +106,15 @@ public class Usuario implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public boolean isActivo() {
+		return activo;
+	}
 
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+	
 	public Persona getPersona() {
 		return this.persona;
 	}
