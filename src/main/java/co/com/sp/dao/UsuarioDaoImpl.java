@@ -83,5 +83,13 @@ public class UsuarioDaoImpl implements UsuarioDao, Serializable {
 		}
 		
 	}
+	
+	public Usuario findByUserName(String username)throws SQLException{
+		Query query = em.createNamedQuery("Usuario.byUsername");
+		query.setParameter("username", username);
+		Usuario result = new Usuario();
+		result = (Usuario) query.getSingleResult();
+		return result;
+	}
 
 }

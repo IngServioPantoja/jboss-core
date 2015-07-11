@@ -28,7 +28,16 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(name="usuario")
-@NamedQueries( { @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u ORDER BY u.idUsuario") })
+@NamedQueries( { 
+	@NamedQuery(name = "Usuario.findAll", 
+			query = "SELECT u FROM Usuario u "
+			+ "ORDER BY u.idUsuario"),
+	@NamedQuery(name = "Usuario.byUsername",
+			query = "SELECT u FROM Usuario u "
+			+ "LEFT JOIN FETCH u.usuarioRoles uur "
+			+ "LEFT JOIN FETCH uur.rol uurr "
+			+ "WHERE u.username = :username"),
+})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 170036224166870374L;

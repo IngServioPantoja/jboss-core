@@ -2,13 +2,23 @@ package co.com.sp.service;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import co.com.sp.dao.UsuarioDao;
 import co.com.sp.domain.Usuario;
+import co.com.sp.domain.UsuarioRol;
 
 @Stateless
 public class UsuarioServiceImpl implements UsuarioService, Serializable {
@@ -40,6 +50,49 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 
 	public void eliminarUsuario(Usuario usuario) throws SQLException {
 		usuarioDao.deleteUsuario(usuario);
+	}
+	
+	public Usuario findByUserName(String username)throws UsernameNotFoundException{
+		Usuario user = null;
+		try {
+			user = usuarioDao.findByUserName(username);
+//		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Usuario user = null;
+		try {
+			user = usuarioDao.findByUserName(username);
+//		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<GrantedAuthority> authorities = buildUserAuthority(user.getUsuarioRoles());
+
+		return buildUserForAuthentication(user, authorities);
+	}
+	
+	private User buildUserForAuthentication(Usuario user, List<GrantedAuthority> authorities) {
+		return new User(user.getUsername(), user.getPassword(), user.isActivo(), true, true, true, authorities);
+	}
+	
+	private List<GrantedAuthority> buildUserAuthority(List<UsuarioRol> userRoles) {
+
+		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+
+		for (UsuarioRol userRole : userRoles) {
+			setAuths.add(new SimpleGrantedAuthority(userRole.getRol().getSigla()));
+		}
+
+		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
+
+		return Result;
 	}
 
 }

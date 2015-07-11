@@ -4,6 +4,7 @@ package co.com.sp.web;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -11,6 +12,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
+import co.com.sp.service.UsuarioService;
 
 
 @ManagedBean
@@ -22,6 +25,9 @@ public class LoginBean implements Serializable{
 	
 	@ManagedProperty(value="#{sessionBean}")
 	private SessionBean sessionBean;
+	
+	@EJB
+	private UsuarioService usuarioServiceImpl;
 	
 	private String username = "";
 	private String password = "";
@@ -58,7 +64,8 @@ public class LoginBean implements Serializable{
 				.getExternalContext().getRequest();
 //		try {
 //			request.login(this.username, this.password);
-			 String msg = "Usuario logueado exitosamente Bienvenido@";
+		usuarioServiceImpl.loadUserByUsername(username);
+			String msg = "Usuario logueado exitosamente Bienvenido@";
 			 FacesMessage facesMessage = new FacesMessage
 			(FacesMessage.SEVERITY_INFO, "Session", msg);
 			 FacesContext facesContext = FacesContext.getCurrentInstance();

@@ -9,6 +9,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import co.com.sp.domain.ModuloOpcion;
 import co.com.sp.domain.Usuario;
 import co.com.sp.service.ModuloOpcionService;
@@ -35,15 +39,21 @@ public class SessionBean implements Serializable{
     }
     
     @PostConstruct
-	public void inicializar() {System.out.println("SessionBean inicializar");
-	
+	public void inicializar() {
+    	System.out.println("SessionBean inicializar");
+    	System.out.println("Intentando cargar sessión desde srpgin security");
 	}
     
     public void definirSesionUsuario(String usuario,String password){
     	try {
-			usuarioLogueado = usuarioService.iniciarSesion(usuario, password);
+	    	SecurityContext context = SecurityContextHolder.getContext();
+	    	Authentication authentication = context.getAuthentication();
+	    	
 			System.out.println("SessionBean definirSesionUsuario Exito");
 			System.out.println("SessionBean cargandoOpciones del sistema");
+			
+			usuarioLogueado = usuarioService.findByUserName(authentication.getName());
+			
 			opcionesActivas = moduloOpcionService.findByRol(usuarioLogueado.getUsuarioRoles().get(0).getRol());
 			
 		} catch (SQLException e) {

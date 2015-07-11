@@ -18,4 +18,6 @@ public interface UsuarioDao {
 	public void deleteUsuario(Usuario usuario);
 
 	public Usuario iniciarSesion(String usuario, String contrasena)throws SQLException;
+	
+	Usuario findByUserName(String username)throws SQLException;
 }

@@ -9,8 +9,6 @@
 </h:head>
 <h:body>
 	<h2>Sistema de Gestión de Alumnos (SGA)</h2>
-	<h:form>
-		<h:commandButton value="Listar Personas" action="listarPersonas" />
-	</h:form>
+	<p:outputLabel value="#{sessionBean.definirSesionUsuario(servio,123456)}"></p:outputLabel>
 </h:body>
 </html>
